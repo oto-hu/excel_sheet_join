@@ -1,0 +1,33 @@
+
+import tkinter as tk
+from tkinter import filedialog
+import pandas as pd 
+import os 
+
+root=tk.Tk() 
+root.title("excel_sheet_join")
+root.geometry("500x250")
+frame=tk.Frame()
+frame.grid(row=0)
+
+def btn_click():
+    type = [("all file","*")]    # 読み取るファイルをcsvに絞り込む。
+    file_path = filedialog.askopenfilename(filetypes = type, initialdir = os.getcwd ()) 
+        
+    # pandasでcsvファイルを読み込ませて表示する。
+    #sheet_name=0がsheet1に該当.pythonでは0列目からスタートします
+    df = pd.read_excel(file_path, sheet_name =0)
+    df1=pd.read_excel(file_path, sheet_name =1)
+
+    df2=pd.concat([df,df1],axis=1)
+    print(df2)
+    # Excelの保存ファイル名.新しいexcelが作成されます.
+    file_name = 'pandas_to_excel.xlsx'
+
+    # 書込み.新しいexcelのシート名をここで決めます.
+    df2.to_excel(file_name, sheet_name='結合したよ')
+    
+Button=tk.Button(frame,text="データ整形",command=btn_click)
+Button.grid(row=3,column=1)
+root.mainloop()
+
